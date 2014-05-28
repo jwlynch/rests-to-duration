@@ -3,6 +3,12 @@
 ;; returns list:
 ;; (item in-group-p last-in=group-p)
 
+;; selectors
+
+(define note car)
+(define in-group? cadr)
+(define last-in-group? caddr)
+
 (define (mk-cl init)
   (let 
     (
