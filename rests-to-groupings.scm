@@ -1,4 +1,7 @@
-(define sample '(r8 d8 d8 r8 r8 d8 d8 d8))
+(define 
+  sample 
+  '((r 1/8) (r 1/8) (n 1/8 g 1) (r 1/8) (r 1/8) (n 1/8 g 1) (n 1/8 g 1) (n 1/8 g 1))
+)
 
 ;; initial assumptions: all incoming notes/rests same duration, all have 
 ;; explicit duration as digits. A note/rest can be split by looking at the
@@ -14,35 +17,41 @@
 ;; WARNING this assumes each item in the measure list has the SAME duration. if not,
 ;; Weird Things will happen.
 
-(define (split-note note-sym)
-  (let ((n (symbol->string note-sym)))
-    (let ((m (string-match "([^0-9]*)([0-9]*)" n)))
-      (let ((note (match:substring m 1))
-            (dur  (match:substring m 2)))
-        (list note dur)
+;; we're going to define our own note, as a list with one of two forms:
+;;
+;; (r <duration>) is a rest, and duration being a number (usually an exact fraction)
+;;                with 1 meaning the size of a whole note, 1/2 meaning dur of half note, 
+;;                etc.
+;;
+;; (n <duration> <lettername> <octave number>) 
+;;                with n meaning a note, <duration> as above, <lettername> being a
+;;                chromatic note between c and b, <octave number refers to which octave
+;;                and a 1 means close to the middle of the piano, (n 1/8 c 1) is middle C.
+
+(define (rest? note) 
+  (eq? (car note) 'r)
+)
+
+(define (mk-longer-note what how-many)
+  (cond
+    ((rest? what)
+      (let
+        ((duration (cadr what)))
+        
+        (list 'r (* duration how-many))
       )
     )
-  )
-)
-
-(define (rest? note-sym) 
-  (let
-    ((note-list (split-note note-sym)))
-    (equal? (car note-list) "r")
-  )
-)
-
-(define (mk-grouping-helper what how-many)
-  (cond
-    ((eq? how-many 0) '())
-    (#t (cons what (mk-grouping-helper what (- how-many 1))))
-  )
-)
-
-(define (mk-grouping what how-many)
-  (cond
-    ((eq? how-many 1) what)
-    (#t (mk-grouping-helper what how-many))
+    (else
+      (let
+        (
+          (duration (cadr what))
+          (lettername (caddr what))
+          (octave-number (cadddr what))
+        )
+        
+        (list 'n (* duration how-many) lettername octave-number)
+      )
+    )
   )
 )
 
@@ -99,7 +108,7 @@
         ))
         (if (eq? how-many 0)
           ender
-          (cons (mk-grouping what-were-collecting how-many) ender)
+          (cons (mk-longer-note what-were-collecting how-many) ender)
         )
       )
     )
@@ -136,7 +145,7 @@
       (cond
         ((> how-many 0) ; a collecting was pending
           (cons 
-            (mk-grouping what-were-collecting how-many) 
+            (mk-longer-note what-were-collecting how-many) 
             (rests-to-groupings-parser 
               (cdr measure) 
               #f
