@@ -55,8 +55,8 @@
   )
 )
 
-(define (rests-to-groupings measure)
-  (rests-to-groupings-parser
+(define (rests-to-durations measure)
+  (rests-to-durations-parser
     measure
     #t
     '()
@@ -89,7 +89,7 @@
 
 ; (debug "tag" measure lead-rest-p what-were-collecting how-many saved-duration)
 
-(define (rests-to-groupings-parser 
+(define (rests-to-durations-parser 
           measure 
           lead-rest-p 
           what-were-collecting 
@@ -115,7 +115,7 @@
     ((rest? (car measure))
       (debug "rest" measure lead-rest-p what-were-collecting how-many saved-duration)
       (if lead-rest-p
-        (rests-to-groupings-parser 
+        (rests-to-durations-parser 
           (cdr measure) 
 	  #f 
 	  (car measure)
@@ -123,14 +123,14 @@
 	  saved-duration
         )
         (if (null? saved-duration)
-          (rests-to-groupings-parser 
+          (rests-to-durations-parser 
             (cdr measure) 
 	    #f
 	    what-were-collecting
 	    (+ 1 how-many)
 	    saved-duration
           )
-          (rests-to-groupings-parser 
+          (rests-to-durations-parser 
             (cdr measure) 
 	    #f
 	    saved-duration
@@ -146,7 +146,7 @@
         ((> how-many 0) ; a collecting was pending
           (cons 
             (mk-longer-note what-were-collecting how-many) 
-            (rests-to-groupings-parser 
+            (rests-to-durations-parser 
               (cdr measure) 
               #f
               '()
@@ -158,7 +158,7 @@
         (#t
           (cond
             ((null? saved-duration)
-              (rests-to-groupings-parser
+              (rests-to-durations-parser
                 (cdr measure)
                 #f
                 '()
@@ -169,7 +169,7 @@
             (#t
               (cons
                 saved-duration
-                (rests-to-groupings-parser
+                (rests-to-durations-parser
                   (cdr measure)
                   #f
                   '()
