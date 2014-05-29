@@ -9,10 +9,10 @@
 (define in-group? cadr)
 (define last-in-group? caddr)
 
-(define (mk-cl init)
+(define (mk-note-streamer note-list)
   (let 
     (
-      (state init)
+      (state note-list)
       (group '())
     )
     (lambda ()
