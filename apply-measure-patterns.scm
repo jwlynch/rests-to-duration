@@ -7,14 +7,14 @@
 
 ;;(define (duration note) )
 
-(define (groupings-to-durations measure pattern)
+(define (apply-measure-pattern measure pattern)
   (let*
     (
       (streamer (mk-cl measure))
       (next (streamer))
     )
   
-    (groupings-to-durations-parser
+    (apply-measure-pattern-parser
       streamer
       pattern
       next
@@ -25,7 +25,7 @@
 )
 
 (define 
-  (groupings-to-durations-parser 
+  (apply-measure-pattern-parser 
     streamer 
     pattern 
     next
@@ -40,7 +40,7 @@
     (else
       (cons 
         (note next)
-        (groupings-to-durations-parser
+        (apply-measure-pattern-parser
           streamer
           pattern
           (streamer)
