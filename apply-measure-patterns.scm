@@ -1,5 +1,5 @@
 
-(load "note-streamer.scm")
+(load "list-streamer.scm")
 (load "note.scm")
 
 (define (apply-measure-pattern measure pattern)
