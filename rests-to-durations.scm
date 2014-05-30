@@ -42,17 +42,15 @@
 ;;                chromatic note between c and b, <octave number refers to which octave
 ;;                and a 1 means close to the middle of the piano, (n 1/8 c 1) is middle C.
 
-(define (rest? note) 
-  (eq? (car note) 'r)
-)
+(load "note.scm")
 
 (define (mk-longer-note what how-many)
   (cond
-    ((rest? what)
+    ((note-isrest? what)
       (let
-        ((duration (cadr what)))
+        ((duration (note-duration what)))
         
-        (list 'r (* duration how-many))
+        (mk-rest (* duration how-many))
       )
     )
     (else
@@ -63,7 +61,7 @@
           (octave-number (cadddr what))
         )
         
-        (list 'n (* duration how-many) lettername octave-number)
+        (mk-note (* duration how-many) lettername octave-number)
       )
     )
   )
@@ -126,7 +124,7 @@
         )
       )
     )
-    ((rest? (car measure))
+    ((note-isrest? (car measure))
       (debug "rest" measure lead-rest-p what-were-collecting how-many saved-duration)
       (if lead-rest-p
         (rests-to-durations-parser 
