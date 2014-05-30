@@ -1,5 +1,5 @@
 
-(load "groupings-streamer.scm")
+(load "note-streamer.scm")
 
 ;; some lilypond note defs
 
@@ -10,7 +10,7 @@
 (define (apply-measure-pattern measure pattern)
   (let*
     (
-      (streamer (mk-cl measure))
+      (streamer (mk-note-streamer measure))
       (next (streamer))
       (pat-el-one-note? (pair? (car pattern)))
       (pat-el (if pat-el-one-note? (caar pattern) (car pattern)))
