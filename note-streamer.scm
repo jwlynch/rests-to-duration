@@ -3,11 +3,17 @@
 ;; returns list:
 ;; (item in-group-p last-in=group-p)
 
-;; selectors
+;; data structure streamout
 
-(define note car)
-(define in-group? cadr)
-(define last-in-group? caddr)
+;constructor
+(define (mk-streamout note in-group? last-in-group?)
+  (list note in-group? last-in-group?)
+)
+
+; selectors
+(define streamout-note car)
+(define streamout-in-group? cadr)
+(define streamout-last-in-group? caddr)
 
 (define (mk-note-streamer note-list)
   (let 
@@ -23,7 +29,7 @@
             (set! prev (car group))
             (set! group (cdr group))
             
-            (list prev #t (null? group))
+            (mk-streamout prev #t (null? group))
           )
           ((pair? state)
             (cond 
@@ -34,13 +40,13 @@
                 (set! prev (car group))
                 (set! group (cdr group))
               
-                (list prev #t (null? group))
+                (mk-streamout prev #t (null? group))
               )
               (else
                 (set! prev (car state))
                 (set! state (cdr state))
               
-                (list prev #f #f)
+                (mk-streamout prev #f #f)
               )
             )
           )
