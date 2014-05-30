@@ -12,6 +12,9 @@
     (
       (streamer (mk-cl measure))
       (next (streamer))
+      (pat-el-one-note? (pair? (car pattern)))
+      (pat-el (if pat-el-one-note? (caar pattern) (car pattern)))
+      (pat-rest (cdr pattern))
     )
   
     (apply-measure-pattern-parser
@@ -20,6 +23,9 @@
       next
       0
       ""
+      pat-el
+      pat-rest
+      pat-el-one-note?
     )
   )
 )
@@ -31,6 +37,9 @@
     next
     group-dur-accum
     group-note
+    pattern-element
+    pattern-spool
+    pattern-el-one-note?
   )
   
   (cond
@@ -46,6 +55,9 @@
           (streamer)
           0
           ""
+          pattern-element
+          pattern-spool
+          pattern-el-one-note?
         )
       )
     )
