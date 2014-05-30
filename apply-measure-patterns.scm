@@ -5,7 +5,7 @@
 (define (apply-measure-pattern measure pattern)
   (let*
     (
-      (streamer (mk-note-streamer measure))
+      (streamer (mk-list-streamer measure))
       (next (streamer))
       (pat-el-one-note? (pair? (car pattern)))
       (pat-el (if pat-el-one-note? (caar pattern) (car pattern)))
@@ -43,7 +43,7 @@
     ) 
     (else
       (cons 
-        (note next)
+        next
         (apply-measure-pattern-parser
           streamer
           pattern
