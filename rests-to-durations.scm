@@ -1,6 +1,20 @@
+(load "note.scm")
+
+(define rest-8th (mk-rest 1/8))
+(define note-8th (mk-note 1/8 'g 1))
+
 (define 
   sample 
-  '((r 1/8) (r 1/8) (n 1/8 g 1) (r 1/8) (r 1/8) (n 1/8 g 1) (n 1/8 g 1) (n 1/8 g 1))
+  (list
+    rest-8th
+    rest-8th
+    note-8th
+    rest-8th
+    rest-8th
+    note-8th
+    note-8th
+    note-8th
+  )
 )
 
 ;; initial assumptions: all incoming notes/rests same duration, all have 
