@@ -85,6 +85,7 @@
           (duration (- orig-duration remainder))
           (pitch (if isrest? '() (note-pitch next)))
           (octave (if isrest? '() (note-octave next)))
+          (after-tie-note (if isrest? (mk-rest remainder) (mk-note remainder pitch octave)))
 
           (pat-el-one-note? (pair? (car pattern-spool)))
           (pat-el (if pat-el-one-note? (caar pattern-spool) (car pattern-spool)))
@@ -100,7 +101,7 @@
             ((apply-out
               (apply-measure-pattern-parser
                 streamer
-                (streamer)
+                after-tie-note
                 0
                 ""
                 pat-el
