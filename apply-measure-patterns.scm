@@ -5,8 +5,8 @@
 (define (apply-measure-pattern measure pattern)
   (let*
     (
-      (streamer (mk-list-streamer measure))
-      (next (streamer))
+      (measure=streamer (mk-list-streamer measure))
+      (next (measure=streamer))
       
       (pat-el-one-note? (pair? (car pattern)))
       (pat-el (if pat-el-one-note? (caar pattern) (car pattern)))
@@ -14,7 +14,7 @@
     )
   
     (apply-measure-pattern-parser
-      streamer
+      measure=streamer
       next
       0
       ""
@@ -27,7 +27,7 @@
 
 (define 
   (apply-measure-pattern-parser 
-    streamer 
+    measure=streamer 
     next
     group-dur-accum
     group-note
@@ -44,8 +44,8 @@
       (cons 
         next
         (apply-measure-pattern-parser
-          streamer
-          (streamer)
+          measure=streamer
+          (measure=streamer)
           0
           ""
           (- pattern-element (note-duration next))
@@ -65,8 +65,8 @@
         (cons 
           next
           (apply-measure-pattern-parser
-            streamer
-            (streamer)
+            measure=streamer
+            (measure=streamer)
             0
             ""
             pat-el
@@ -100,7 +100,7 @@
           (let
             ((apply-out
               (apply-measure-pattern-parser
-                streamer
+                measure=streamer
                 after-tie-note
                 0
                 ""
