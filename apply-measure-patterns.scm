@@ -8,19 +8,30 @@
       (measure=streamer (mk-list-streamer measure))
       (next (measure=streamer))
       
-      (pat-el-one-note? (pair? (car pattern)))
-      (pat-el (if pat-el-one-note? (caar pattern) (car pattern)))
-      (pat-rest (cdr pattern))
+      (pattern-streamer (mk-list-streamer pattern))
+      (pat-el (pattern-streamer))
+      (pat-el-one-note? (pair? pat-el))
+      (pattern-element (if pat-el-one-note? (car pat-el) pat-el))
     )
-  
-    (apply-measure-pattern-parser
-      measure=streamer
-      next
-      0
-      ""
-      pat-el
-      pat-rest
-      pat-el-one-note?
+
+    (cond
+      ((null? measure)
+        'EMPTY_MEASURE
+      )
+      ((null? pattern-element)
+        'EMPTY_PATTERN
+      )
+      (else
+        (apply-measure-pattern-parser
+          measure=streamer
+          next
+          0
+          ""
+          pattern-element
+          pattern-streamer
+          pat-el-one-note?
+        )
+      )
     )
   )
 )
@@ -32,14 +43,17 @@
     group-dur-accum
     group-note
     pattern-element
-    pattern-spool
+    pattern-streamer
     pattern-el-one-note?
   )
   
   (cond
     ((null? next)
       '()
-    ) 
+    )
+    ((null? pattern-element)
+      '()
+    )
     ((< (note-duration next) pattern-element)
       (cons 
         next
@@ -49,7 +63,7 @@
           0
           ""
           (- pattern-element (note-duration next))
-          pattern-spool
+          pattern-streamer
           pattern-el-one-note?
         )
       )
@@ -57,9 +71,9 @@
     ((= (note-duration next) pattern-element)
       (let*
         (
-          (pat-el-one-note? (pair? (car pattern-spool)))
-          (pat-el (if pat-el-one-note? (caar pattern-spool) (car pattern-spool)))
-          (pat-rest (cdr pattern-spool))
+          (pat-el (pattern-streamer))
+          (pat-el-one-note? (pair? pat-el))
+          (pattern-element (if pat-el-one-note? (car pat-el) pat-el))
         )
         
         (cons 
@@ -69,8 +83,8 @@
             (measure=streamer)
             0
             ""
-            pat-el
-            pat-rest
+            pattern-element
+            pattern-streamer
             pat-el-one-note?
           )
         )
@@ -87,9 +101,9 @@
           (octave (if isrest? '() (note-octave next)))
           (after-tie-note (if isrest? (mk-rest remainder) (mk-note remainder pitch octave)))
 
-          (pat-el-one-note? (pair? (car pattern-spool)))
-          (pat-el (if pat-el-one-note? (caar pattern-spool) (car pattern-spool)))
-          (pat-rest (cdr pattern-spool))
+          (pat-el (pattern-streamer))
+          (pat-el-one-note? (pair? pat-el))
+          (pattern-element (if pat-el-one-note? (car pat-el) pat-el))
         )
         
         (cons 
@@ -104,8 +118,8 @@
                 after-tie-note
                 0
                 ""
-                pat-el
-                pat-rest
+                pattern-element
+                pattern-streamer
                 pat-el-one-note?
               )
             ))
