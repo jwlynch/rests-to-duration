@@ -32,6 +32,7 @@
 
 (define samp-1 (rests-to-durations sample-1))
 (define samp-2 (rests-to-durations sample-2))
-(define result-1 (apply-measure-pattern samp-1 '(1/2 1/2)))
-(define result-2 (apply-measure-pattern samp-2 '(1/2 1/2)))
+(define pattern '(1/2 1/2))
+(define result-1 (apply-measure-pattern samp-1 pattern))
+(define result-2 (apply-measure-pattern samp-2 pattern))
 
