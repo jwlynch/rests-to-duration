@@ -1,10 +1,14 @@
+(load "note.scm")
+(load "list-streamer.scm")
+
 (define (measure-pattern-test measure pattern)
   (let*
     (
       (measure-streamer (mk-list-streamer measure))
       (pattern-streamer (mk-list-streamer pattern))
-      (note-or-rest (measure-streamer))
-      (pattern-value (pattern-streamer))
+      (note-or-rest 'dummynote)
+      (pattern-value 0) ;; trigger new pattern section
+      (pat-val-one-note? #f)
     )
     
     (measure-pattern-test-parser
@@ -12,6 +16,7 @@
       note-or-rest
       pattern-streamer
       pattern-value
+      pat-val-one-note?
       #t
     )
   )
@@ -23,39 +28,69 @@
     note-or-rest
     pattern-streamer
     pattern-value
+    pat-val-one-note?
     bool-result
   )
   
   (cond
-    ((null? note-or-rest)
-      (if (and (= pattern-value 0) (null? pattern-value)) ;; not possible, fixit
-        bool-result
-        #f
-      )
+    ((null? pattern-value) ;; reached end of pattern
+      bool-result
     )
-    ((= 0 pattern-value)
-      (and
-        bool-result
-        (measure-pattern-test-parser
-          measure-streamer
-          note-or-rest
-          pattern-streamer
-          (pattern-streamer)
-          bool-result
+    ((= pattern-value 0) ;; collected all notes in section corresponding to this pattern value
+      (let*
+        (
+          (nxt-note (measure-streamer))
+          (note (if (eq? nxt-note 'TIE) (measure-streamer) nxt-note))
+          
+          (pat-el (pattern-streamer))
+          (pat-el-one-note? (pair? pat-el))
+          (pattern-value (if pat-el-one-note? (car pat-el) pat-el))
+        )
+
+        (cond
+	  ((null? note) bool-result)
+          ((not pat-el-one-note?)
+            (measure-pattern-test-parser
+              measure-streamer
+              note
+              pattern-streamer
+              pattern-value
+              pat-el-one-note?
+              bool-result
+            )
+          )
+          ((note-isrest? note) #f)
+          ((not (= pattern-value (note-duration note))) #f)
+          (else ;; the one note filled the pattern value, so get next pattern val and next note
+            (measure-pattern-test-parser
+              measure-streamer
+              '()
+              pattern-streamer
+              0 ;; signal next pattern section
+              pat-val-one-note?
+              bool-result
+            )            
+          )
         )
       )
     )
-    (else
-      (and
-        bool-result
+    (else ;; more notes or rests in section
+      (let*
+        (
+          (its-duration (note-duration note-or-rest))
+          (new-pattern-value (- pattern-value its-duration))
+        )
+        
         (measure-pattern-test-parser
           measure-streamer
           (measure-streamer)
           pattern-streamer
-          (- pattern-value (note-duration note-or-rest))
+          new-pattern-value
+          pat-val-one-note?
           bool-result
         )
       )
     )
   )
 )
+
