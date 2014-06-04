@@ -50,7 +50,7 @@
       (measure-exceptions-tried (chk-exception-one measure))
     )
     
-    (if (null? measure-exception-tried)
+    (if (null? measure-exceptions-tried)
       (apply-measure-pattern measure equal-division)
       measure-exceptions-tried
     )
