@@ -12,19 +12,14 @@
 )
 
 (define (split-duration-star duration-list denom pwr2)
-  (let
-    (
-    )
-    
-    (cond
-      ((null? duration-list) '())
-      ((char=? #\1 (car duration-list))
-        (cons (/ pwr2 denom)
-              (split-duration-star (cdr duration-list) denom (* 2 pwr2))
-        )
+  (cond
+    ((null? duration-list) '())
+    ((char=? #\1 (car duration-list))
+      (cons (/ pwr2 denom)
+            (split-duration-star (cdr duration-list) denom (* 2 pwr2))
       )
-      (else ( split-duration-star (cdr duration-list) denom (* 2 pwr2) ))
     )
+    (else ( split-duration-star (cdr duration-list) denom (* 2 pwr2) ))
   )
 )
 
@@ -37,5 +32,19 @@
     )
     
     (reverse (split-duration-star duration-list denom 1))
+  )
+)
+
+;; TODO: rewrite this to find serieses of 1-bits in duration list
+;; (at the moment it's the same as the above)
+(define (split-duration-adj-one-bits-star duration-list denom pwr2)
+  (cond
+    ((null? duration-list) '())
+    ((char=? #\1 (car duration-list))
+      (cons (/ pwr2 denom)
+            (split-duration-adj-one-bits-star (cdr duration-list) denom (* 2 pwr2))
+      )
+    )
+    (else ( split-duration-adj-one-bits-star (cdr duration-list) denom (* 2 pwr2) ))
   )
 )
