@@ -14,6 +14,10 @@
 (define note-octave cadddr)
 
 ;recognizer
+(define (note-isnote? note)
+  (eq? (note-type note) 'n)
+)
+
 (define (note-isrest? note)
   (eq? (note-type note) 'r)
 )
