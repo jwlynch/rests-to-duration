@@ -44,7 +44,6 @@
     pwr2
     last-was-1?
     num-ones
-    first-one
     total-of-run
   )
   
@@ -52,7 +51,7 @@
     ((null? duration-list) 
       (if last-was-1? ;; then add element to the list
         (cons
-          (list total-of-run first-one (- num-ones 1)) ;; (dur note numdots)
+          (list total-of-run (/ (/ pwr2 denom) 2) (- num-ones 1)) ;; (dur note numdots)
           '()
         )
         '()
@@ -65,7 +64,6 @@
         (* 2 pwr2)
         #t
         (+ num-ones 1)
-        (if (not last-was-1?) (/ pwr2 denom) first-one)
         (+ total-of-run (/ pwr2 denom))
       )
     )
@@ -79,13 +77,12 @@
             #f
             0
             0
-            0
           )
         ))
         
         (if last-was-1?
 	  (cons
-	    (list total-of-run first-one (- num-ones 1)) ;; (dur note numdots)
+	    (list total-of-run (/ (/ pwr2 denom) 2) (- num-ones 1)) ;; (dur note numdots)
 	    split-output
 	  )
 	  split-output
@@ -109,7 +106,6 @@
         denom
         1
         #f
-        0
         0
         0
       )
