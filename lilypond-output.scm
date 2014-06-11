@@ -40,7 +40,23 @@
     )
     ((note-isnote? (car measure))
       (append
-        '(not-yet)
+        (map
+          (lambda (bitrun) 
+            (let*
+              (
+		(n (car measure))
+		(pitch (pitch-octave (note-pitch n) (note-octave n)))
+                (denom (denominator (bitrun-basicdur bitrun)))
+                (denom-str (number->string denom 10))
+                (dots (make-string (bitrun-numdots bitrun) #\.))
+              )
+              
+              (string-append pitch denom-str dots)
+            )
+          )
+          (split-duration-dots (note-duration (car measure)))
+        )
+        
         (lilypond-output (cdr measure))
       )
     )
