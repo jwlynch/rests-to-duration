@@ -1,6 +1,8 @@
 ;; part of converstion to actual notes. takes durations and splits them into powers of 2 or runs 
 ;; of admacent 1 bits, needed for multi-dotted notes.
 
+(load "bitrun.scm")
+
 (define (dec->bin num)   (number->string (string->number num 10) 2))
 
 (define (int->binstr int)
@@ -38,7 +40,7 @@
 ;; TODO: rewrite this to find serieses of 1-bits in duration list
 ;; (at the moment it's the same as the above)
 (define 
-  (split-duration-adj-one-bits-star 
+  (split-duration-bitruns-star 
     duration-list 
     denom 
     pwr2
@@ -51,14 +53,14 @@
     ((null? duration-list) 
       (if last-was-1? ;; then add element to the list
         (cons
-          (list total-of-run (/ (/ pwr2 denom) 2) (- num-ones 1)) ;; (dur note numdots)
+          (mk-bitrun total-of-run (/ (/ pwr2 denom) 2) (- num-ones 1)) ;; (dur note numdots)
           '()
         )
         '()
       )
     )
     ((char=? #\1 (car duration-list)) ;; collect this pwr of 2
-      (split-duration-adj-one-bits-star 
+      (split-duration-bitruns-star 
         (cdr duration-list) 
         denom 
         (* 2 pwr2)
@@ -70,7 +72,7 @@
     (else 
       (let
         ((split-output
-          (split-duration-adj-one-bits-star 
+          (split-duration-bitruns-star 
             (cdr duration-list) 
             denom 
             (* 2 pwr2) 
@@ -82,7 +84,7 @@
         
         (if last-was-1?
 	  (cons
-	    (list total-of-run (/ (/ pwr2 denom) 2) (- num-ones 1)) ;; (dur note numdots)
+	    (mk-bitrun total-of-run (/ (/ pwr2 denom) 2) (- num-ones 1)) ;; (dur note numdots)
 	    split-output
 	  )
 	  split-output
@@ -101,7 +103,7 @@
     )
     
     (reverse 
-      (split-duration-adj-one-bits-star 
+      (split-duration-bitruns-star 
         duration-list 
         denom
         1
