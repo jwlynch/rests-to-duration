@@ -22,6 +22,25 @@
   )
 )
 
+(define deb-p #t)
+(define 
+  (deb-mptp
+    tag
+    measure-streamer
+    note-or-rest
+    pattern-streamer
+    pattern-value
+    pat-val-one-note?
+    bool-result
+  )
+  
+  (display (string-append tag ": note: " note-or-rest "; pattern value: " pattern-value ))
+  (display (string-append "; one note? " (if pat-val-one-note? "yes" "no") "; result: "))
+  (display (string-append (if bool-result "true\n" "false\n") ))
+)
+;;   (deb-mptp "tag" measure-streamer note-or-rest pattern-streamer pattern-value pat-val-one-note? bool-result)
+
+
 (define 
   (measure-pattern-test-parser
     measure-streamer
