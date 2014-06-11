@@ -1,17 +1,52 @@
 ;; This will do the final translation from the note.scm form to the form suitable for lilypond input.
 
+(load "note.scm")
+(load "note-durations.scm")
+
+(define (pitch-octave pitch octave)
+  
+)
+
 ;; this will be "hard-wired" for simple quadruple 4/4 time
 
 (define (lilypond-output measure)
   (cond
     ((null? measure) '())
-    ((eq? (car measure) 'TIE) "~")
-    ((note-isrest? (car measure) 
+    ((eq? (car measure) 'TIE) 
+      (cons
+        "~"
+        (lilypond-output (cdr measure))
+      )
     )
-    ((note-isnote? (car measure)
+    ((note-isrest? (car measure))
+      ;; hardwire: no dots on rests
+      (append
+        (map
+          (lambda (dur) 
+            (let*
+              (
+                (denom (denominator dur))
+                (denom-str (number->string denom 10))
+              )
+              
+              (string-append "r" denom-str)
+            )
+          )
+          (split-duration-pow2 (note-duration (car measure)))
+        )
+      
+        (lilypond-output (cdr measure))
+      )
     )
-    (else
+    ((note-isnote? (car measure))
+      (append
+        '(not-yet)
+        (lilypond-output (cdr measure))
+      )
+    )
+    (else ;; none recognized, just skip it
       (lilypond-output (cdr measure))
     )
   )
 )
+
