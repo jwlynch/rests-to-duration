@@ -11,7 +11,7 @@
 (define (is-bitrun it)
   (cond
     ((not (pair? it)) #f)
-    ((not (eq? (car it) 'bitrun)) #f
+    ((not (eq? (car it) 'bitrun)) #f)
     (else #t)
   )
 )
