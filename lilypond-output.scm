@@ -4,7 +4,29 @@
 (load "note-durations.scm")
 
 (define (pitch-octave pitch octave)
-  "pitch-octave-not-yet"
+  (let 
+    (
+      (pitch-str
+        (cond
+          ((string? pitch) pitch)
+          ((symbol? pitch) (symbol->string pitch))
+          (else "error-pitch-type")
+        )
+      )
+    )
+
+    (cond
+      ((> octave 0)
+        (string-append pitch-str (make-string octave #\'))
+      )
+      ((= octave 0)
+        (string-append pitch-str)
+      )
+      ((< octave 0)
+        (string-append pitch-str (make-string (- octave) #\,))
+      )
+    )
+  )
 )
 
 ;; this will be "hard-wired" for simple quadruple 4/4 time
