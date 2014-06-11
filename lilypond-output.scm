@@ -4,7 +4,7 @@
 (load "note-durations.scm")
 
 (define (pitch-octave pitch octave)
-  
+  "pitch-octave-not-yet"
 )
 
 ;; this will be "hard-wired" for simple quadruple 4/4 time
