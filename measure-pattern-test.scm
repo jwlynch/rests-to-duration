@@ -68,19 +68,19 @@
           (note (if (eq? nxt-note 'TIE) (measure-streamer) nxt-note))
           
           (pat-el (pattern-streamer))
-          (pat-el-one-note? (pair? pat-el))
-          (pattern-value (if pat-el-one-note? (car pat-el) pat-el))
+          (pat-val-one-note? (pair? pat-el))
+          (pattern-value (if pat-val-one-note? (car pat-el) pat-el))
         )
 
         (cond
 	  ((null? note) bool-result)
-          ((not pat-el-one-note?)
+          ((not pat-val-one-note?)
             (measure-pattern-test-parser
               measure-streamer
               note
               pattern-streamer
               pattern-value
-              pat-el-one-note?
+              pat-val-one-note?
               bool-result
             )
           )
