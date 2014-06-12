@@ -6,7 +6,7 @@
     (
       (measure-streamer (mk-list-streamer measure))
       (pattern-streamer (mk-list-streamer pattern))
-      (note-or-rest 'dummynote)
+      (note-or-rest (measure-streamer))
       (pattern-value 0) ;; trigger new pattern section
       (pat-val-one-note? #f)
     )
@@ -58,12 +58,13 @@
   
   (cond
     ((null? pattern-value) ;; reached end of pattern
+      (deb-mptp "nullpattern" note-or-rest pattern-value pat-val-one-note? bool-result)
       bool-result
     )
     ((= pattern-value 0) ;; collected all notes in section corresponding to this pattern value
       (let*
         (
-          (nxt-note (measure-streamer))
+          (nxt-note note-or-rest)
           (note (if (eq? nxt-note 'TIE) (measure-streamer) nxt-note))
           
           (pat-el (pattern-streamer))
@@ -88,7 +89,7 @@
           (else ;; the one note filled the pattern value, so get next pattern val and next note
             (measure-pattern-test-parser
               measure-streamer
-              '()
+              (measure-streamer)
               pattern-streamer
               0 ;; signal next pattern section
               pat-val-one-note?
