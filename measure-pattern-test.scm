@@ -22,7 +22,7 @@
   )
 )
 
-(define deb-p #t)
+(define deb-p #f)
 (define 
   (deb-mptp
     tag
