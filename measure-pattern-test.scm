@@ -73,7 +73,10 @@
         )
 
         (cond
-	  ((null? note) bool-result)
+	  ((null? note) 
+	    (deb-mptp "pat val 0 && note null" note-or-rest pattern-value pat-val-one-note? bool-result)
+	    bool-result
+	  )
           ((not pat-val-one-note?)
             (measure-pattern-test-parser
               measure-streamer
@@ -84,9 +87,16 @@
               bool-result
             )
           )
-          ((note-isrest? note) #f)
-          ((not (= pattern-value (note-duration note))) #f)
+          ((note-isrest? note) 
+            (deb-mptp "is rest && one note" note-or-rest pattern-value pat-val-one-note? bool-result)
+            #f
+          )
+          ((not (= pattern-value (note-duration note))) 
+            (deb-mptp "one note && no match" note-or-rest pattern-value pat-val-one-note? bool-result)
+            #f
+          )
           (else ;; the one note filled the pattern value, so get next pattern val and next note
+            (deb-mptp "one note && match" note-or-rest pattern-value pat-val-one-note? bool-result)
             (measure-pattern-test-parser
               measure-streamer
               (measure-streamer)
@@ -105,6 +115,8 @@
           (its-duration (note-duration note-or-rest))
           (new-pattern-value (- pattern-value its-duration))
         )
+        
+        (deb-mptp "more notes in pattern section" note-or-rest pattern-value pat-val-one-note? bool-result)
         
         (measure-pattern-test-parser
           measure-streamer
