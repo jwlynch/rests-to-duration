@@ -32,9 +32,16 @@
     bool-result
   )
   
-  (display (string-append tag ": note: " note-or-rest "; pattern value: " pattern-value ))
-  (display (string-append "; one note? " (if pat-val-one-note? "yes" "no") "; result: "))
-  (display (string-append (if bool-result "true\n" "false\n") ))
+  (cond
+    (deb-p
+      (display (string-append tag ": note-or-rest: "))
+      (display note-or-rest)
+      (display "; pattern value: ")
+      (display pattern-value )
+      (display (string-append "; one note? " (if pat-val-one-note? "yes" "no") "; result: "))
+      (display (string-append (if bool-result "true\n" "false\n") ))
+    )
+  )
 )
 ;;   (deb-mptp "tag" note-or-rest pattern-value pat-val-one-note? bool-result)
 
