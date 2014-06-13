@@ -50,6 +50,19 @@
     result
   )
   
+  (cond
+    ((null? note) ;; no more notes left in measure
+      (and result (= pattern-value 0))
+    )
+    ((= pattern-value 0) ;; collected notes to fill duration in pattern-value
+      result
+    )
+    ((> pattern-value 0) ;; more duration to fill
+    )
+    (else ;; this shouldn't happen if measure processed properly
+      'error-pattern-negative
+    )
+  )
 )
 
 ;; do this (if 4/4 time) after rests-to-durations
