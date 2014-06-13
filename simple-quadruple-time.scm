@@ -131,6 +131,23 @@
   )
 )
 
+;; take an equal-dividion measure, and look at each half, creating a pattern to apply to the 
+;; measure. Where there is at least one note shorter than an 8th, contribute (1/4 1/4), otherwise
+;; contribute (1/2).
+(define (eq-div-16ths-pattern measure)
+  (let*
+    (
+      (chk-result (chk-eq-div-16ths measure))
+      (chk-left (car chk-result))
+      (chk-right (cadr chk-result))
+      (left (if chk-left '(1/4 1/4) '(1/2)))
+      (right (if chk-right '(1/4 1/4) '(1/2)))
+    )
+    
+    (append left right)
+  )
+)
+
 ;; do this (if 4/4 time) after rests-to-durations
 
 (define (simple-quadruple measure)
