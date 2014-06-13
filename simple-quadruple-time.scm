@@ -158,9 +158,10 @@
     
     (cond 
       ((null? measure-exceptions-tried)
-        (let
+        (let*
           (
-            (the-16ths-pattern (eq-div-16ths-pattern measure))
+            (measure-eq-div (apply-measure-pattern measure equal-division))
+            (the-16ths-pattern (eq-div-16ths-pattern measure-eq-div))
           )
           
           (apply-measure-pattern measure the-16ths-pattern)
