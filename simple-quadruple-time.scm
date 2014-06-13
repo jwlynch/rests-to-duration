@@ -81,6 +81,30 @@
   )
 )
 
+;; takes a measure processed with equal-division pattern and returns
+;; a list of 2 bools, first true if any 16ths on the left, and second
+;; true if any 16ths on the right.
+(define (chk-eq-div-16ths measure)
+  (let
+    (
+      (measure-streamer (mk-list-streamer measure))
+      (result #f)
+    )
+    
+    (map
+      (lambda (pattern-value)
+        (chk-16ths-star 
+          measure-streamer 
+          (measure-streamer)
+          pattern-value 
+          result
+        )
+      )
+      equal-division
+    )
+  )
+)
+
 ;; do this (if 4/4 time) after rests-to-durations
 
 (define (simple-quadruple measure)
