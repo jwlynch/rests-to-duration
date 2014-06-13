@@ -42,6 +42,16 @@
   )
 )
 
+(define 
+  (chk-16th-star 
+    measure-streamer
+    note
+    pattern-value
+    result
+  )
+  
+)
+
 ;; do this (if 4/4 time) after rests-to-durations
 
 (define (simple-quadruple measure)
