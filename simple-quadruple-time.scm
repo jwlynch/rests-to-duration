@@ -86,7 +86,8 @@
       (dbg-c16s "pattern value greater than 0" note pattern-value result)
       (let*
         (
-          (new-note (measure-streamer))
+          (the-note (measure-streamer))
+          (new-note (if (eq? the-note 'TIE) (measure-streamer) the-note))
           (dur (note-duration new-note))
           (new-pattern-value (- pattern-value dur))
           (shorter-than-8th? (> (denominator dur) 8))
