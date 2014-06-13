@@ -58,6 +58,20 @@
       result
     )
     ((> pattern-value 0) ;; more duration to fill
+      (let*
+        (
+          (dur (note-duration note))
+          (new-pattern-value (- pattern-value dur))
+          (shorter-than-8th? (> (denominator dur) 8))
+        )
+        
+        (chk-16th-star 
+          measure-streamer
+          (measure-streamer)
+          new-pattern-value
+          (or shorter-than-8th? result) ;; in case a prev note was shorter
+        )
+      )
     )
     (else ;; this shouldn't happen if measure processed properly
       'error-pattern-negative
