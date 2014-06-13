@@ -156,9 +156,17 @@
       (measure-exceptions-tried (chk-exception-one measure))
     )
     
-    (if (null? measure-exceptions-tried)
-      (apply-measure-pattern measure equal-division)
-      measure-exceptions-tried
+    (cond 
+      ((null? measure-exceptions-tried)
+        (let
+          (
+            (the-16ths-pattern (eq-div-16ths-pattern measure))
+          )
+          
+          (apply-measure-pattern measure the-16ths-pattern)
+        )
+      )
+      (else measure-exceptions-tried)
     )
   )
 )
