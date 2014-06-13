@@ -45,7 +45,7 @@
 )
 
 (define 
-  (chk-16th-star 
+  (chk-16ths-star 
     measure-streamer
     note
     pattern-value
@@ -67,7 +67,7 @@
           (shorter-than-8th? (> (denominator dur) 8))
         )
         
-        (chk-16th-star 
+        (chk-16ths-star 
           measure-streamer
           (measure-streamer)
           new-pattern-value
