@@ -44,6 +44,27 @@
   )
 )
 
+(define dbg-c16s? #t)
+(define
+  (dbg-c16s 
+    tag
+    note
+    pattern-value
+    result
+  )
+  
+  (cond
+    (dbg-c16s?
+      (display "tag: ") (display tag)
+      (display "; note: ") (display note)
+      (display "; pattern-value: ") (display pattern-value)
+      (display "; result: ") (display result) (newline)
+      
+    )
+  )
+)
+;; (dbg-c16s "tag" note pattern-value result)
+
 (define 
   (chk-16ths-star 
     measure-streamer
@@ -54,12 +75,15 @@
   
   (cond
     ((null? note) ;; no more notes left in measure
+      (dbg-c16s "null note" note pattern-value result)
       (and result (= pattern-value 0))
     )
     ((= pattern-value 0) ;; collected notes to fill duration in pattern-value
+      (dbg-c16s "pattern value is 0" note pattern-value result)
       result
     )
     ((> pattern-value 0) ;; more duration to fill
+      (dbg-c16s "pattern value greater than 0" note pattern-value result)
       (let*
         (
           (dur (note-duration note))
@@ -76,6 +100,7 @@
       )
     )
     (else ;; this shouldn't happen if measure processed properly
+      (dbg-c16s "pattern value less than 0 (shouldn't happen)" note pattern-value result)
       'error-pattern-negative
     )
   )
