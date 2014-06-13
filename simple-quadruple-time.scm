@@ -86,14 +86,15 @@
       (dbg-c16s "pattern value greater than 0" note pattern-value result)
       (let*
         (
-          (dur (note-duration note))
+          (new-note (measure-streamer))
+          (dur (note-duration new-note))
           (new-pattern-value (- pattern-value dur))
           (shorter-than-8th? (> (denominator dur) 8))
         )
         
         (chk-16ths-star 
           measure-streamer
-          (measure-streamer)
+          new-note
           new-pattern-value
           (or shorter-than-8th? result) ;; in case a prev note was shorter
         )
@@ -120,7 +121,7 @@
       (lambda (pattern-value)
         (chk-16ths-star 
           measure-streamer 
-          (measure-streamer)
+          'dummy
           pattern-value 
           result
         )
