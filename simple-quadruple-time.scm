@@ -8,6 +8,8 @@
 
 (load "apply-measure-patterns.scm")
 (load "measure-pattern-test.scm")
+(load "note.scm")
+(load "list-streamer.scm")
 
 (define equal-division '(1/2 1/2))
 
