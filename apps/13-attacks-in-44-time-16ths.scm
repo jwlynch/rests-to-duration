@@ -1,10 +1,11 @@
-(load "arrangement.scm")
-(load "rests-to-durations.scm")
-(load "simple-quadruple-time.scm")
-(load "result-writing.scm")
-(load "note.scm")
-(load "lilypond-output.scm")
-(load "result-writing.scm")
+(load "tool-attribs.scm")
+
+(load (string-append prefix "arrangement.scm"))
+(load (string-append prefix "rests-to-durations.scm"))
+(load (string-append prefix "simple-quadruple-time.scm"))
+(load (string-append prefix "result-writing.scm"))
+(load (string-append prefix "note.scm"))
+(load (string-append prefix "lilypond-output.scm"))
 
 (define arrs (arrangements 16 (list (list (mk-note 1/16 'g 0) 13) (list (mk-rest 1/16) 3))))
 
