@@ -2,7 +2,7 @@
 
 (define (replace-notes note-list measure)
   (cond
-    ((null measure)
+    ((null? measure)
       '()
     )
     ((note-isrest? (car measure))
