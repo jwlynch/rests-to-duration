@@ -25,7 +25,10 @@
             (mk-note dur pitch octave)
             (replace-notes (cdr note-list) (cdr measure))
           )
-          (replace-notes note-list (cdr measure))
+          (cons
+            (car measure)
+            (replace-notes note-list (cdr measure))
+          )
         )
       )
     )
