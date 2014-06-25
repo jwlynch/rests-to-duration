@@ -18,7 +18,6 @@
           (more-notes? (not (null? note-list)))
           (pitch (if nore-notes? (note-pitch (car note-list)) '()))
           (octave (if nore-notes? (note-octave (car note-list)) '()))
-          (repl-note-result )
         )
         
         (if nore-notes? 
