@@ -16,11 +16,11 @@
         (
           (dur (note-duration (car measure)))
           (more-notes? (not (null? note-list)))
-          (pitch (if nore-notes? (note-pitch (car note-list)) '()))
-          (octave (if nore-notes? (note-octave (car note-list)) '()))
+          (pitch (if more-notes? (note-pitch (car note-list)) '()))
+          (octave (if more-notes? (note-octave (car note-list)) '()))
         )
         
-        (if nore-notes? 
+        (if more-notes? 
           (cons
             (mk-note duration pitch octave)
             (replace-notes (cdr note-list) (cdr measure))
