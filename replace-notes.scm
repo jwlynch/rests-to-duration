@@ -22,7 +22,7 @@
         
         (if more-notes? 
           (cons
-            (mk-note duration pitch octave)
+            (mk-note dur pitch octave)
             (replace-notes (cdr note-list) (cdr measure))
           )
           (replace-notes note-list (cdr measure))
